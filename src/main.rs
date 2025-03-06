@@ -3,11 +3,32 @@ mod database;
 mod api;
 use tokio_postgres::{connect, Error};
 use std::collections::HashSet;
+use tokio::time::{sleep, Duration};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     let (apikey, db_url) = config::config::config();
-    let (client, connection) = connect(&db_url, tokio_postgres::NoTls).await?;
+    
+    loop {
+        println!("\n=== Starting validation cycle ===");
+        let start_time = std::time::SystemTime::now();
+        
+        match run_validation_cycle(&apikey, &db_url).await {
+            Ok(_) => println!("Validation cycle completed successfully"),
+            Err(e) => eprintln!("Error in validation cycle: {}", e),
+        }
+        
+        if let Ok(elapsed) = start_time.elapsed() {
+            println!("Cycle completed in {:.2} seconds", elapsed.as_secs_f64());
+        }
+        
+        println!("Sleeping for 60 seconds before next cycle...");
+        sleep(Duration::from_secs(60)).await;
+    }
+}
+
+async fn run_validation_cycle(apikey: &str, db_url: &str) -> Result<(), Error> {
+    let (client, connection) = connect(db_url, tokio_postgres::NoTls).await?;
 
     tokio::spawn(async move {
         if let Err(e) = connection.await {
