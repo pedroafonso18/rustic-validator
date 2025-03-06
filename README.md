@@ -85,7 +85,7 @@ Summary: 5 deleted, 145 updated, 50 inserted
 
 ## License
 
-This project is licensed under the IBM Public License 1.0 - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Author
 
