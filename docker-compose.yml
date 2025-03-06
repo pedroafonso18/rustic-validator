@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  validator:
+    image: ${DOCKER_REGISTRY:-localhost}/rustic-validator:latest
+    environment:
+      - APIKEY=${APIKEY}
+      - DATABASE_URL=${DATABASE_URL}
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 64M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    driver: overlay
+    attachable: true
