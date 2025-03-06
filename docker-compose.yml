@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   validator:
-    image: ${DOCKER_REGISTRY:-localhost}/rustic-validator:latest
+    image: meuconsig/rustic-validator:1.0.0
     environment:
       - APIKEY=${APIKEY}
       - DATABASE_URL=${DATABASE_URL}
