@@ -1,4 +1,4 @@
-# Rustic-Validator
+# Rustic-Webshare-Validator
 
 A Rust application for synchronizing and managing proxy information between the Webshare API and a PostgreSQL database.
 
